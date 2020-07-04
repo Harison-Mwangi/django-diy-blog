@@ -1,7 +1,7 @@
 # django DIY blog
 A basic blog to complete MDN django tutorials assessment
 
-![Django CI](https://github.com/Harison-Mwangi/django-diy-blog/workflows/Django%20CI/badge.svg)
+![Django CI](https://github.com/Harison-Mwangi/django-diy-blog/workflows/Django%20CI/badge.svg?branch=dev)
 
 ## Instructions
 
