@@ -1,5 +1,6 @@
 from django.test import TestCase
-from blog.models import Blogger
+from blog.models import Blogger, Post
+from datetime import date, timedelta
 
 class BloggerModelTest(TestCase):
     @classmethod
@@ -39,4 +40,55 @@ class BloggerModelTest(TestCase):
 
     def test_get_absolute_url(self):
         blogger= Blogger.objects.get(id=1)
-        self.assertEquals(Blogger.get_absolute_url(), '/catalog/blogger/1')
+        self.assertEquals(blogger.get_absolute_url(), '/blog/blogger/1')
+
+class PostModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Set up non-modified objects used by all test methods
+        title = "My first blog"
+        post_date = date.today() - timedelta(days=5)
+        description = """Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum."""
+        Post.objects.create(title=title, post_date=post_date, description=description)
+
+    # labels
+    def test_title_label(self):
+        post= Post.objects.get(id=1)
+        field_label = Post._meta.get_field('title').verbose_name
+        self.assertEquals(field_label, 'title')
+
+    def test_post_date_label(self):
+        post= Post.objects.get(id=1)
+        field_label = Post._meta.get_field('post_date').verbose_name
+        self.assertEquals(field_label, 'post_date')
+
+    def test_description_label(self):
+        post= Post.objects.get(id=1)
+        field_label = Post._meta.get_field('description').verbose_name
+        self.assertEquals(field_label, 'description')
+
+    # max length
+    def test_title_max_length(self):
+        post= Post.objects.get(id=1)
+        max_length = Post._meta.get_field('title').max_length
+        self.assertEquals(max_length, 100)
+
+    def test_description_max_length(self):
+        post= Post.objects.get(id=1)
+        max_length = Post._meta.get_field('description').max_length
+        self.assertEquals(max_length, 4000)    
+
+    # custom class methods
+    def test_post_name_is_title(self):
+        post= Post.objects.get(id=1)
+        expected_object_name = Post.title
+        self.assertEquals(expected_object_name, str(Post))
+
+    def test_get_absolute_url(self):
+        post= Post.objects.get(id=1)
+        self.assertEquals(post.get_absolute_url(), '/blog/1')
