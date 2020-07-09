@@ -1,6 +1,6 @@
 from django.test import TestCase
 from blog.models import Blogger, Post
-from datetime import date, timedelta
+from datetime import date
 
 class BloggerModelTest(TestCase):
     @classmethod
@@ -35,7 +35,7 @@ class BloggerModelTest(TestCase):
     # custom class methods
     def test_blogger_name_is_name(self):
         blogger= Blogger.objects.get(id=1)
-        expected_object_name = Blogger.name
+        expected_object_name = blogger.name
         self.assertEquals(expected_object_name, str(blogger))
 
     def test_get_absolute_url(self):
@@ -47,14 +47,14 @@ class PostModelTest(TestCase):
     def setUpTestData(cls):
         # Set up non-modified objects used by all test methods
         title = "My first blog"
-        post_date = date.today() - timedelta(days=5)
+        date_posted = date.today()
         description = """Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
             tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
             quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
             consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
             cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
             proident, sunt in culpa qui officia deserunt mollit anim id est laborum."""
-        Post.objects.create(title=title, post_date=post_date, description=description)
+        Post.objects.create(title=title, date_posted=date_posted, description=description)
 
     # labels
     def test_title_label(self):
@@ -62,10 +62,10 @@ class PostModelTest(TestCase):
         field_label = Post._meta.get_field('title').verbose_name
         self.assertEquals(field_label, 'title')
 
-    def test_post_date_label(self):
+    def test_date_posted_label(self):
         post= Post.objects.get(id=1)
-        field_label = Post._meta.get_field('post_date').verbose_name
-        self.assertEquals(field_label, 'post_date')
+        field_label = Post._meta.get_field('date_posted').verbose_name
+        self.assertEquals(field_label, 'date posted')
 
     def test_description_label(self):
         post= Post.objects.get(id=1)
@@ -81,13 +81,19 @@ class PostModelTest(TestCase):
     def test_description_max_length(self):
         post= Post.objects.get(id=1)
         max_length = Post._meta.get_field('description').max_length
-        self.assertEquals(max_length, 4000)    
+        self.assertEquals(max_length, 4000)
+
+    #  date field
+    def test_date_posted_is_today(self):
+        post= Post.objects.get(id=1)
+        date_posted = Post._meta.get_field('date_posted').default
+        self.assertEquals(date_posted, date.today)
 
     # custom class methods
     def test_post_name_is_title(self):
         post= Post.objects.get(id=1)
-        expected_object_name = Post.title
-        self.assertEquals(expected_object_name, str(Post))
+        expected_object_name = post.title
+        self.assertEquals(expected_object_name, str(post))
 
     def test_get_absolute_url(self):
         post= Post.objects.get(id=1)
