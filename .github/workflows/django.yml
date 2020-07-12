@@ -2,9 +2,7 @@ name: Django CI
 
 on:
   push:
-    branches: 
-      # Push events to any branch
-      - '*'
+    branches: [ master, 'issue-*']
   pull_request:
     branches: [ master, dev ]
 
