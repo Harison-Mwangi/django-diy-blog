@@ -1,7 +1,8 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+
 from datetime import date
-from django.contrib.auth.models import User
 
 class Blogger(models.Model):
     """Model representing a blogger."""
@@ -19,7 +20,7 @@ class Blogger(models.Model):
         """Returns the url to access a particular blogger instance."""
         return reverse('blogger-detail', args=[str(self.id)])
 
-class Post(models.Model):
+class Blog(models.Model):
     """Model representing a blog post."""
     title = models.CharField(max_length=100)
 
@@ -38,11 +39,11 @@ class Post(models.Model):
     
     def get_absolute_url(self):
         """Returns the url to access a detail record for this blog post."""
-        return reverse('post-detail', args=[str(self.id)])
+        return reverse('blog-detail', args=[str(self.id)])
 
 class Comment(models.Model):
     """Model representing a blog comment."""
-    blog = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
+    blog = models.ForeignKey(Blog, on_delete=models.SET_NULL, null=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     date_posted = models.DateField(auto_now_add=True)
     last_edit = models.DateField(auto_now=True)
@@ -53,4 +54,4 @@ class Comment(models.Model):
         
     def __str__(self):
         """String for representing the Model object."""
-        return self.description
+        return self.description[:75]
