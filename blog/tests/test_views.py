@@ -1,11 +1,11 @@
 from django.contrib.auth.models import User
-from django.test import TestCase, SimpleTestCase
+from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
 from blog.models import Blogger, Blog
 
-class BloggerListViewTest(SimpleTestCase):           
+class BloggerListViewTest(TestCase):           
     def test_view_url_exists_at_desired_location(self):
         response = self.client.get('/blog/bloggers/')
         self.assertEqual(response.status_code, 200)
