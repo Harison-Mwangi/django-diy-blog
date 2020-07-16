@@ -34,9 +34,9 @@ class BloggerModelTest(TestCase):
         expected_object_name = blogger.name
         self.assertEquals(expected_object_name, str(blogger))
 
-    # def test_get_absolute_url(self):
-    #     blogger= Blogger.objects.get(id=1)
-    #     self.assertEquals(blogger.get_absolute_url(), '/blog/blogger/1')
+    def test_get_absolute_url(self):
+        blogger= Blogger.objects.get(id=1)
+        self.assertEquals(blogger.get_absolute_url(), '/blog/blogger/1/')
 
 class BlogModelTest(TestCase):
     @classmethod
@@ -87,9 +87,9 @@ class BlogModelTest(TestCase):
         expected_object_name = blog.title
         self.assertEquals(expected_object_name, str(blog))
 
-    # def test_get_absolute_url(self):
-    #     blog= Blog.objects.get(id=1)
-    #     self.assertEquals(Blog.get_absolute_url(), '/blog/1')
+    def test_get_absolute_url(self):
+        blog= Blog.objects.get(id=1)
+        self.assertEquals(blog.get_absolute_url(), '/blog/1/')
 
 class CommentModelTest(TestCase):
     @classmethod
