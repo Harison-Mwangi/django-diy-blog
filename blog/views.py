@@ -27,3 +27,9 @@ class BloggerListView(generic.ListView):
 class BlogListView(generic.ListView):
     model = Blog
     paginate_by = 5
+
+class BloggerDetailView(generic.DetailView):
+    model = Blogger
+
+class BlogDetailView(generic.DetailView):
+    model = Blog
