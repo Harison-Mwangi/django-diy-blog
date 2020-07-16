@@ -116,10 +116,6 @@ class CommentModelTest(TestCase):
         field_label = Blog._meta.get_field('date_posted').verbose_name
         self.assertEquals(field_label, 'date posted')
 
-    def test_last_edit_label(self):
-        field_label = Comment._meta.get_field('last_edit').verbose_name
-        self.assertEquals(field_label, 'last edit')
-
     def test_description_label(self):
         field_label = Comment._meta.get_field('description').verbose_name
         self.assertEquals(field_label, 'description')

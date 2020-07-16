@@ -45,12 +45,11 @@ class Comment(models.Model):
     """Model representing a blog comment."""
     blog = models.ForeignKey(Blog, on_delete=models.SET_NULL, null=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    date_posted = models.DateField(auto_now_add=True)
-    last_edit = models.DateField(auto_now=True)
+    time_posted = models.DateTimeField(auto_now_add=True)
     description = models.TextField(max_length=500, help_text='Enter a comment about the blog post here')
 
     class Meta:
-        ordering = ['-date_posted']
+        ordering = ['time_posted']
         
     def __str__(self):
         """String for representing the Model object."""
