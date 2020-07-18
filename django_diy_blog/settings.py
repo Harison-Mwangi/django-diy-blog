@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-import os
+import os, django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'e$q=o232lmf0e6lklaj1*z4ckv+*vy)(buv!yw8!hzfg#$j(9l'
+SECRET_KEY = s.environ.get('SECRET_KEY', 'e$q=o232lmf0e6lklaj1*z4ckv+*vy)(buv!yw8!hzfg#$j(9l')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 
 ALLOWED_HOSTS = []
 
@@ -128,3 +128,6 @@ LOGIN_REDIRECT_URL = '/'
 # Email backend for testing
 # It logs any emails sent to the console so you can copy the password reset link from the console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Heroku Postgres settings
+django_heroku.settings(locals()) 
