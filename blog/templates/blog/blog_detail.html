@@ -9,13 +9,21 @@
 
     <div style="margin-left:20px;margin-top:20px">
         <h4>Comments</h4>
+        <hr>
 
         {% for comment in blog.comment_set.all %}
-            <hr>
             <p>
                 {{ comment.author }}
                 ({{ comment.time_posted }}) - {{ comment.description }}
             </p>
+            <hr>
         {% endfor %}
+
+        {% if user.is_authenticated %}
+            <p><a href="{% url 'comment-create' blog.id %}">Add a new comment</a></p> 
+
+        {% else %}
+            <p><a href="{% url 'login' %}?next={{request.path}}">Login</a> to add a new comment</p>   
+        {% endif %} 
     </div>
 {% endblock %}
