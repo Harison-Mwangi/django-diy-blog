@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 from django.views import generic
 
-from . models import Blogger, Blog
+from . models import Blogger, Blog, Comment
 
 def index(request):
     """View function for home page of site."""
@@ -33,3 +35,31 @@ class BloggerDetailView(generic.DetailView):
 
 class BlogDetailView(generic.DetailView):
     model = Blog
+
+class  CommentCreate(LoginRequiredMixin, generic.edit.CreateView):
+    model = Comment
+    fields = ['description',]
+        
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(CommentCreate, self).get_context_data(**kwargs)
+        # Get the blog object from the "pk" URL parameter and add it to the context
+        context['blog'] = get_object_or_404(Blog, pk = self.kwargs['pk'])
+        return context
+
+    def form_valid(self, form):
+        """
+        Add author and associated blog to form data before setting it as valid (so it is saved to model)
+        """
+        #Add logged-in user as author of comment
+        form.instance.author = self.request.user
+        #Associate comment with blog based on passed id
+        form.instance.blog=get_object_or_404(Blog, pk = self.kwargs['pk'])
+        # Call super-class form validation behaviour
+        return super(CommentCreate, self).form_valid(form)
+
+    def get_success_url(self):
+        """
+        After posting comment, return to associated blog.
+        """
+        return reverse('blog-detail', kwargs={'pk': self.kwargs['pk'],})
